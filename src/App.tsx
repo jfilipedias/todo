@@ -1,4 +1,5 @@
-import { FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
+import cuid from 'cuid'
 import { PlusCircle } from 'phosphor-react'
 
 import logo from './assets/logo.svg'
@@ -8,22 +9,14 @@ import { Task } from './components/Task'
 import './global.css'
 
 interface Task {
+  id: string
   description: string
   isDone?: boolean
 }
 
 function App() {
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      description:
-        'Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.',
-      isDone: true,
-    },
-    {
-      description:
-        'Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.',
-    },
-  ])
+  const [tasks, setTasks] = useState<Task[]>([])
+  const [newTaskDescription, setNewTaskDescription] = useState('')
 
   const tasksCompletedAmount = tasks.filter((tasks) => tasks.isDone).length
   const tasksCompletedStatus =
@@ -33,6 +26,34 @@ function App() {
 
   function handleCreateTask(event: FormEvent) {
     event.preventDefault()
+
+    const newTask = { id: cuid(), description: newTaskDescription } as Task
+    setTasks([newTask, ...tasks])
+    setNewTaskDescription('')
+  }
+
+  function handleChangeTaskDescription(event: ChangeEvent<HTMLInputElement>) {
+    setNewTaskDescription(event.target.value)
+  }
+
+  function updateTaskStatus(taskId: string, isDone: boolean) {
+    const taskToUpdate = tasks.find((task) => task.id === taskId) as Task
+
+    const updatedTask = {
+      id: taskToUpdate.id,
+      description: taskToUpdate.description,
+      isDone,
+    }
+
+    const tasksWithoutUpdatedOne = tasks.filter((task) => task.id !== taskId)
+
+    const updatedTasks = [...tasksWithoutUpdatedOne, updatedTask]
+
+    const sortedUpdatedTasks = updatedTasks.sort(
+      (taskA, taskB) => Number(taskA.isDone) - Number(taskB.isDone)
+    )
+
+    setTasks(sortedUpdatedTasks)
   }
 
   return (
@@ -46,7 +67,13 @@ function App() {
 
       <main className={styles.main}>
         <form className={styles.newTask} onSubmit={handleCreateTask}>
-          <input type="text" placeholder="Adicione uma nova tarefa" />
+          <input
+            name="task"
+            type="text"
+            placeholder="Adicione uma nova tarefa"
+            value={newTaskDescription}
+            onChange={handleChangeTaskDescription}
+          />
 
           <button type="submit">
             Criar <PlusCircle size={16} weight="bold" />
@@ -66,7 +93,12 @@ function App() {
 
         <div className={styles.taskList}>
           {tasks.map((task) => (
-            <Task key={task.description} description={task.description} />
+            <Task
+              key={task.id}
+              id={task.id}
+              description={task.description}
+              onChangeTaskStatus={updateTaskStatus}
+            />
           ))}
         </div>
       </main>
