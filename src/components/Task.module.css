@@ -1,0 +1,41 @@
+.task {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid var(--gray-400);
+  border-radius: 8px;
+  background: var(--gray-500);
+}
+
+.description {
+  flex: 1;
+}
+
+.trash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  trasition: background 0.1s;
+}
+
+.trash:hover {
+  background: var(--gray-400);
+  trasition: background 0.1s;
+}
+
+.trash > svg {
+  color: var(--gray-300);
+  trasition: color 0.1s;
+}
+
+.trash:hover > svg {
+  color: var(--red-500);
+  trasition: color 0.1s;
+}

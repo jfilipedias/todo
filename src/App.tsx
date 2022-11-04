@@ -3,6 +3,7 @@ import { PlusCircle } from 'phosphor-react'
 
 import logo from './assets/logo.svg'
 import styles from './App.module.css'
+import { Task } from './components/Task'
 
 import './global.css'
 
@@ -65,7 +66,7 @@ function App() {
 
         <div className={styles.taskList}>
           {tasks.map((task) => (
-            <p key={task.description}>{task.description}</p>
+            <Task key={task.description} description={task.description} />
           ))}
         </div>
       </main>
