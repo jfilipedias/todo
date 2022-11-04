@@ -56,6 +56,12 @@ function App() {
     setTasks(sortedUpdatedTasks)
   }
 
+  function deleteTask(taskId: string) {
+    const tasksWithoutDeletedOne = tasks.filter((task) => task.id !== taskId)
+
+    setTasks(tasksWithoutDeletedOne)
+  }
+
   return (
     <>
       <header className={styles.header}>
@@ -97,7 +103,8 @@ function App() {
               key={task.id}
               id={task.id}
               description={task.description}
-              onChangeTaskStatus={updateTaskStatus}
+              onChangeStatus={updateTaskStatus}
+              onDelete={deleteTask}
             />
           ))}
         </div>

@@ -6,15 +6,20 @@ import styles from './Task.module.css'
 interface TaskProps {
   id: string
   description: string
-  onChangeTaskStatus: (taskId: string, isDone: boolean) => void
+  onChangeStatus: (taskId: string, isDone: boolean) => void
+  onDelete: (taskId: string) => void
 }
 
-export function Task({ id, description, onChangeTaskStatus }: TaskProps) {
+export function Task({ id, description, onChangeStatus, onDelete }: TaskProps) {
   const [isDone, setIsDone] = useState(false)
 
-  function handleDoneChange() {
-    onChangeTaskStatus(id, !isDone)
+  function handleStatusChange() {
+    onChangeStatus(id, !isDone)
     setIsDone(!isDone)
+  }
+
+  function handleDeleteTask() {
+    onDelete(id)
   }
 
   return (
@@ -26,7 +31,7 @@ export function Task({ id, description, onChangeTaskStatus }: TaskProps) {
           aria-label="Completar tarefa"
           type="checkbox"
           checked={isDone}
-          onChange={handleDoneChange}
+          onChange={handleStatusChange}
         />
 
         <p
@@ -38,7 +43,12 @@ export function Task({ id, description, onChangeTaskStatus }: TaskProps) {
         </p>
       </div>
 
-      <button className={styles.trash} type="button" title="Deletar tarefa">
+      <button
+        className={styles.trash}
+        type="button"
+        title="Deletar tarefa"
+        onClick={handleDeleteTask}
+      >
         <Trash size={16} />
       </button>
     </div>
