@@ -9,8 +9,47 @@
   background: var(--gray-500);
 }
 
+.taskDone {
+  border: 1px solid var(--gray-500);
+}
+
+.checkbox {
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0.45rem;
+  border: 2px solid var(--blue-500);
+  border-radius: 50%;
+  background: var(--gray-500);
+  transition: border 0.2s, color 0.4s;
+  appearance: none;
+  cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.checkbox:hover {
+  background: rgba(30, 111, 159, 0.2);
+  border: 2px solid var(--blue-500);
+}
+
+.checkbox:checked {
+  border: 2px solid var(--purple-500);
+  background: var(--purple-500) url('../assets/checked.svg') center no-repeat;
+}
+
+.checkbox:checked:hover {
+  border: 2px solid var(--purple-300);
+  background: var(--purple-300) url('../assets/checked.svg') center no-repeat;
+}
+
 .description {
   flex: 1;
+  font-size: 0.875rem;
+}
+
+.descriptionDone {
+  color: var(--gray-300);
+  text-decoration: line-through;
 }
 
 .trash {
