@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
 import cuid from 'cuid'
-import { PlusCircle } from 'phosphor-react'
+import { ClipboardText, PlusCircle } from 'phosphor-react'
 
 import logo from './assets/logo.svg'
 import styles from './App.module.css'
@@ -19,6 +19,7 @@ function App() {
   const [newTaskDescription, setNewTaskDescription] = useState('')
 
   const tasksCompletedAmount = tasks.filter((tasks) => tasks.isDone).length
+
   const tasksCompletedStatus =
     tasksCompletedAmount > 0
       ? `${tasksCompletedAmount} de ${tasks.length}`
@@ -62,6 +63,25 @@ function App() {
     setTasks(tasksWithoutDeletedOne)
   }
 
+  const taskList = tasks.map((task) => (
+    <Task
+      key={task.id}
+      id={task.id}
+      description={task.description}
+      onChangeStatus={updateTaskStatus}
+      onDelete={deleteTask}
+    />
+  ))
+
+  const taskListPlaceholder = (
+    <div className={styles.taskListPlaceholder}>
+      <ClipboardText size={56} weight="light" />
+
+      <strong>Você ainda não tem tarefas cadastradas</strong>
+      <p>Crie tarefas e organize seus itens a fazer</p>
+    </div>
+  )
+
   return (
     <>
       <header className={styles.header}>
@@ -98,15 +118,7 @@ function App() {
         </div>
 
         <div className={styles.taskList}>
-          {tasks.map((task) => (
-            <Task
-              key={task.id}
-              id={task.id}
-              description={task.description}
-              onChangeStatus={updateTaskStatus}
-              onDelete={deleteTask}
-            />
-          ))}
+          {tasks.length > 0 ? taskList : taskListPlaceholder}
         </div>
       </main>
     </>
